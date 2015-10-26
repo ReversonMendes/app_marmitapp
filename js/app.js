@@ -50,34 +50,46 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
     }
   })
 
-  .state('tab.chats', {
-      url: '/chats',
+  .state('tab.pedido', {
+      url: '/pedido',
       views: {
-        'tab-chats': {
-          templateUrl: 'templates/tab-chats.html',
-          controller: 'ChatsCtrl'
-        }
-      }
-    })
-    .state('tab.chat-detail', {
-      url: '/chats/:chatId',
-      views: {
-        'tab-chats': {
-          templateUrl: 'templates/chat-detail.html',
-          controller: 'ChatDetailCtrl'
+        'tab-pedido': {
+          templateUrl: 'templates/tab-pedido.html',
+          controller: 'CardapiosCtrl'
         }
       }
     })
 
-  .state('tab.account', {
-    url: '/account',
+    .state('tab.pedido-detail', {
+      url: '/pedido/:cardapioId',
+      views: {
+        'tab-pedido': {
+          templateUrl: 'templates/pedido-detail.html',
+          controller: 'CardapioDetailCtrl'
+        }
+      }
+    })
+
+  .state('tab.entrega', {
+    url: '/entrega',
     views: {
-      'tab-account': {
-        templateUrl: 'templates/tab-account.html',
+      'tab-entrega': {
+        templateUrl: 'templates/tab-entrega.html',
         controller: 'AccountCtrl'
       }
     }
+  })
+
+    .state('tab.pagamento', {
+    url: '/pagamento',
+    views: {
+      'tab-pagamento': {
+        templateUrl: 'templates/tab-pagamento.html',
+        controller: 'PagamentoCtrl'
+      }
+    }
   });
+
 
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/tab/dash');

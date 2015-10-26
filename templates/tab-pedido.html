@@ -1,0 +1,19 @@
+<ion-view view-title="Pedido">
+  <ion-content>
+    <ion-list>
+      <ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="cardapio in cardapios" type="item-text-wrap" href="#/tab/pedido/{{cardapio.id}}">
+        <img ng-src="{{cardapio.face}}">
+        <h2>{{cardapio.name}}</h2>
+        <p>{{cardapio.lastText}}</p>
+        <i class="icon ion-chevron-right icon-accessory"></i>
+
+        <ion-option-button class="button-assertive" ng-click="remove(cardapio)">
+          Delete
+        </ion-option-button>
+      </ion-item>
+    </ion-list>
+    <button class="button button-full button-positive"  ng-click="showShareOptions()">
+     Fazer pedido
+    </button>
+  </ion-content>
+</ion-view>
