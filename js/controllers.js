@@ -45,8 +45,8 @@ angular.module('starter.controllers', [])
     });
   };
 
-    var CarregarPrecos = function(idempresa) {
-    Cardapios.allprecos(idempresa).success(function (data) {
+    var CarregarPrecos = function() {
+    Cardapios.allprecos($stateParams.empresaId).success(function (data) {
       $scope.precos = data;
     }).error(function (data, status) {
       $scope.message = "Aconteceu um problema: " + data;
@@ -82,7 +82,7 @@ angular.module('starter.controllers', [])
   };
 
   CarregarIngredientes();
-  CarregarPrecos($stateParams.empresaId);
+  CarregarPrecos();
 })
 
 // .controller('CardapioDetailCtrl', function($scope, $stateParams, Cardapios) {
@@ -90,19 +90,84 @@ angular.module('starter.controllers', [])
 //   $scope.cardapios = Cardapios.get($stateParams.cardapioId);
 // })
 
-.controller('AccountCtrl', function($scope,$ionicPopup) {
-        $scope.insert = function() {
-        $ionicPopup.prompt({
-            title: 'Digite o seu nome',
-            inputType: 'text'
-        })
-        .then(function(result) {
-            if(result !== undefined) {
-                console.log(result);
-            } else {
-                console.log("Action not completed");
-            }
-        });
+.controller('EntregaCtrl', function($scope,$ionicPopup,$cordovaGeolocation) {
+
+
+  var posOptions = {timeout: 10000, enableHighAccuracy: false};
+
+    $cordovaGeolocation.getCurrentPosition(posOptions).then(function (position) {
+        var lat  = position.coords.latitude
+        var long = position.coords.longitude
+        console.log(position);
+        console.log('lat:'+lat + ' long:'+long);
+      }, function(err) {
+        // error
+      });
+
+  //     var request = {
+  //       'position': posOptions
+  //     };
+  //     plugin.google.maps.Geocoder.geocode(request, function(position) {
+  //       if (position.length) {
+  //         var result = results[0];
+  //         var position = result.position; 
+  //         var address = [
+  //           result.subThoroughfare || "",
+  //           result.thoroughfare || "",
+  //           result.locality || "",
+  //           result.adminArea || "",
+  //           result.postalCode || "",
+  //           result.country || ""].join(", ");
+
+  //         map.addMarker({
+  //           'position': position,
+  //           'title':  address
+  //         });
+  //       } else {
+  //         alert("Not found");
+  //       }
+  //     });
+
+    // var watchOptions = {
+    //   timeout : 3000,
+    //   enableHighAccuracy: false // may cause errors if true
+    // };
+
+    // var watch = $cordovaGeolocation.watchPosition(watchOptions);
+    // watch.then(
+    //   null,
+    //   function(err) {
+    //     // error
+    //   },
+    //   function(position) {
+    //     var lat  = position.coords.latitude
+    //     var long = position.coords.longitude
+    //     console.log(position);
+    //     console.log('lat:'+lat + ' long:'+long);
+    // });
+
+
+  //  watch.clearWatch();
+    // OR
+    // $cordovaGeolocation.clearWatch(watch)
+    //   .then(function(result) {
+    //     // success
+    //     }, function (error) {
+    //     // error
+    //   });
+
+      $scope.insert = function() {
+      $ionicPopup.prompt({
+          title: 'Digite o seu nome',
+          inputType: 'text'
+      })
+      .then(function(result) {
+          if(result !== undefined) {
+              console.log(result);
+          } else {
+              console.log("Action not completed");
+          }
+      });
     }
  
 })

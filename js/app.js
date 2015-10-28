@@ -5,9 +5,9 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
+angular.module('starter', ['ionic', 'ngCordova','starter.controllers', 'starter.services'])
 
-.run(function($ionicPlatform) {
+.run(function($ionicPlatform,$ionicPopup) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -20,6 +20,48 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
       // org.apache.cordova.statusbar required
       StatusBar.styleLightContent();
     }
+
+    if(window.Connection){
+      if(navigator.connection.type == Connection.NONE){
+        $ionicPopup.alert({
+          title: 'Atenção',
+          content: 'você não está conectado na internet.'
+        });
+      }
+    }
+    var div = document.getElementById("map_canvas");
+    var map = plugin.google.maps.Map.getMap(div);
+
+    // if (window.plugin) {
+    //    // map = window.plugin.google.maps.Map;//.getMap(div);
+    //     console.log("map");
+    //   // var request = {
+    //   //   'position': -25.729435499999997
+    //   // };
+    //   // plugin.google.maps.Geocoder.geocode(request, function(position) {
+    //   //   if (position.length) {
+    //   //     var result = results[0];
+    //   //     var position = result.position; 
+    //   //     var address = [
+    //   //       result.subThoroughfare || "",
+    //   //       result.thoroughfare || "",
+    //   //       result.locality || "",
+    //   //       result.adminArea || "",
+    //   //       result.postalCode || "",
+    //   //       result.country || ""].join(", ");
+
+    //   //       console.log(address);
+
+    //   //     map.addMarker({
+    //   //       'position': position,
+    //   //       'title':  address
+    //   //     });
+    //   //   } else {
+    //   //     alert("Not found");
+    //   //   }
+    //   // });
+    // }
+
   });
 })
 
@@ -76,7 +118,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
     views: {
       'tab-entrega': {
         templateUrl: 'templates/tab-entrega.html',
-        controller: 'AccountCtrl'
+        controller: 'EntregaCtrl'
       }
     }
   })
