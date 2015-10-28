@@ -45,30 +45,31 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
     views: {
       'tab-dash': {
         templateUrl: 'templates/tab-dash.html',
-        controller: 'DashCtrl'
+        controller: 'CardapiosCtrl'
       }
     }
   })
+  
 
   .state('tab.pedido', {
-      url: '/pedido',
+      url: '/pedido/:cardapioId/:empresaId',
       views: {
         'tab-pedido': {
           templateUrl: 'templates/tab-pedido.html',
-          controller: 'CardapiosCtrl'
+          controller: 'IngredienteCtrl'
         }
       }
     })
 
-    .state('tab.pedido-detail', {
-      url: '/pedido/:cardapioId',
-      views: {
-        'tab-pedido': {
-          templateUrl: 'templates/pedido-detail.html',
-          controller: 'CardapioDetailCtrl'
-        }
-      }
-    })
+    // .state('tab.pedido-detail', {
+    //   url: '/pedido/:cardapioId',
+    //   views: {
+    //     'tab-pedido': {
+    //       templateUrl: 'templates/pedido-detail.html',
+    //       controller: 'CardapioDetailCtrl'
+    //     }
+    //   }
+    // })
 
   .state('tab.entrega', {
     url: '/entrega',

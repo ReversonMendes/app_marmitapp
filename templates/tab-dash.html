@@ -1,28 +1,15 @@
-<ion-view view-title="Dashboard">
-  <ion-content class="padding">
-    <div class="list card">
-      <div class="item item-divider">Recent Updates</div>
-      <div class="item item-body">
-        <div>
-          There is a fire in <b>sector 3</b>
-        </div>
-      </div>
-    </div>
-    <div class="list card">
-      <div class="item item-divider">Health</div>
-      <div class="item item-body">
-        <div>
-          You ate an apple today!
-        </div>
-      </div>
-    </div>
-    <div class="list card">
-      <div class="item item-divider">Upcoming</div>
-      <div class="item item-body">
-        <div>
-          You have <b>29</b> meetings on your calendar tomorrow.
-        </div>
-      </div>
-    </div>
+<ion-view view-title="Cardápio">
+  <ion-content>
+    <ion-refresher pulling-text="Puxe para atualizar" on-refresh="doRefresh()">
+    </ion-refresher>
+    <ion-list>
+      <ion-item class="list card item-avatar item-icon-right" ng-repeat="cardapio in cardapios" type="item-text-wrap" href="#/tab/pedido/{{cardapio.idcardapio}}/{{cardapio.idempresa}}">
+        <img ng-src="http://localhost:80/img/uploads/empresas_logos/{{cardapio.logo}}">
+        <h2>{{cardapio.nomeprato}}</h2>
+        <p>{{cardapio.razaosocial}}</p>
+        <i class="icon ion-chevron-right icon-accessory"></i>
+      </ion-item>
+    </ion-list>
   </ion-content>
 </ion-view>
+

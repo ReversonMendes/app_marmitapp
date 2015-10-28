@@ -1,18 +1,19 @@
 <ion-view view-title="Pedido">
   <ion-content>
     <ion-list>
-      <ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="cardapio in cardapios" type="item-text-wrap" href="#/tab/pedido/{{cardapio.id}}">
-        <img ng-src="{{cardapio.face}}">
-        <h2>{{cardapio.name}}</h2>
-        <p>{{cardapio.lastText}}</p>
-        <i class="icon ion-chevron-right icon-accessory"></i>
-
-        <ion-option-button class="button-assertive" ng-click="remove(cardapio)">
+      <div class="item item-divider item-icon-right">
+        Ingredientes
+        <a href="#" ng-click="doRefresh()"> <i class="icon ion-refresh icon-accessory"></i> </a>
+      </div>
+      <ion-item class="item-remove-animate item-icon-right" ng-repeat="ingrediente in ingredientes" type="item-text-wrap">
+        <h2>{{ingrediente.nomeingrediente}}</h2>
+        <!-- <p>{{ingrediente.idempresa}} -->
+        <ion-option-button class="button-assertive" ng-click="removeIngrediente(ingrediente)">
           Delete
         </ion-option-button>
       </ion-item>
     </ion-list>
-    <button class="button button-full button-positive"  ng-click="showShareOptions()">
+    <button class="button button-full button-positive"  ng-click="showPrecoOptions()">
      Fazer pedido
     </button>
   </ion-content>
