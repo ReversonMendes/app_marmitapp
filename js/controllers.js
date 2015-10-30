@@ -21,7 +21,7 @@ angular.module('starter.controllers', [])
   carregarCardapios();
 })
 
-.controller('IngredienteCtrl', function($scope,Cardapios, $ionicActionSheet,$stateParams) {
+.controller('IngredienteCtrl', function($scope,Cardapios, $ionicActionSheet,$stateParams,$localstorage,$state) {
 
   // $scope.$on('$ionicView.enter', function(e) {
   //  //   $stateParams = null;
@@ -31,6 +31,11 @@ angular.module('starter.controllers', [])
 
   $scope.ingredientes = [];
   $scope.precos = [];
+  $scope.nomeprato = "";
+  $scope.quantidade = 1;
+  $scope.nomeprato = $stateParams.nomeprato;
+  console.log($scope.nomeprato);
+  $localstorage.set('prato',$scope.nomeprato);
 
    $scope.doRefresh = function() {
     $scope.ingredientes.unshift(CarregarIngredientes())
@@ -38,6 +43,7 @@ angular.module('starter.controllers', [])
   };
 
   var CarregarIngredientes = function () {
+    $localstorage.removeKey("remover");
     Cardapios.allIngredientes($stateParams.cardapioId).success(function (data) {
       $scope.ingredientes = data;
     }).error(function (data, status) {
@@ -55,6 +61,16 @@ angular.module('starter.controllers', [])
 
 
   $scope.removeIngrediente = function(ingrediente) {
+    console.log(ingrediente.nomeingrediente);
+   // $localstorage.set('tirar', $localstorage.get('tirar') +', '+ ingrediente.nomeingrediente);
+   if(typeof $localstorage.get('remover') == 'undefined' ){
+    $localstorage.set('remover',ingrediente.nomeingrediente );
+   }else{
+    var junta =  $localstorage.get('remover')
+    $localstorage.set('remover', junta +', '+ ingrediente.nomeingrediente);
+   }
+    
+
     $scope.ingredientes.splice($scope.ingredientes.indexOf(ingrediente), 1);
   };
 
@@ -75,8 +91,9 @@ angular.module('starter.controllers', [])
 
       },
       buttonClicked: function (index) {
-        console.log(buttonsPrecos[index]);
-        return true;
+        $localstorage.setObject("preco",$scope.precos[index]);
+        $localstorage.set('quantidade',$scope.quantidade);
+        $state.go('tab.entrega');
       }
     });
   };
@@ -90,91 +107,115 @@ angular.module('starter.controllers', [])
 //   $scope.cardapios = Cardapios.get($stateParams.cardapioId);
 // })
 
-.controller('EntregaCtrl', function($scope,$ionicPopup,$cordovaGeolocation) {
+.controller('EntregaCtrl', function($scope,$ionicPopup,$cordovaGeolocation,$ionicLoading,$localstorage,$state) {
+  $scope.localentrega = {};
+  $scope.mensagem = '';
 
-
-  var posOptions = {timeout: 10000, enableHighAccuracy: false};
-
+  if(typeof $localstorage.get('preco') != 'undefined'){
+    var posOptions = {timeout: 10000, enableHighAccuracy: false};
+    //Busca o endereço do usuário
     $cordovaGeolocation.getCurrentPosition(posOptions).then(function (position) {
-        var lat  = position.coords.latitude
-        var long = position.coords.longitude
-        console.log(position);
-        console.log('lat:'+lat + ' long:'+long);
-      }, function(err) {
-        // error
+        // $ionicLoading.show({
+        //   content: 'Obtendo localização atual ...',
+        //   showBackdrop: false
+        // });
+        var latlng = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
+        var geocoder = new google.maps.Geocoder();
+        console.log(position.coords.latitude);
+        console.log(position.coords.longitude);
+
+        geocoder.geocode({'latLng': latlng}, function(results, status) {
+          if (status == google.maps.GeocoderStatus.OK) {
+
+            var result = results[0];
+            var cidade = "";
+            var rua = "";
+            var numero = 0;
+            var bairro = "";
+
+            for(var i=0, len=result.address_components.length; i<len; i++) {
+              var ac = result.address_components[i];
+              if(ac.types.indexOf("locality") >= 0) cidade = ac.long_name;
+              if(ac.types.indexOf("route") >= 0) rua = ac.long_name;
+              if(ac.types.indexOf("street_number") >= 0) numero = ac.long_name;
+              if(ac.types.indexOf("sublocality_level_1") >= 0) bairro = ac.long_name;
+              console.log(result.address_components[i]);
+            }
+
+              $scope.localentrega = {
+                  "cidade" : cidade,
+                  "bairro" : bairro,
+                  "rua" : rua,
+                  "numero" : numero
+              }
+          } 
+        });
+        // $ionicLoading.hide();
+      }, function(error) {
+          $ionicPopup.alert({
+            title: 'Atenção',
+            content: 'Não é possível obter a localização: ' + error.message
+          });
       });
-
-  //     var request = {
-  //       'position': posOptions
-  //     };
-  //     plugin.google.maps.Geocoder.geocode(request, function(position) {
-  //       if (position.length) {
-  //         var result = results[0];
-  //         var position = result.position; 
-  //         var address = [
-  //           result.subThoroughfare || "",
-  //           result.thoroughfare || "",
-  //           result.locality || "",
-  //           result.adminArea || "",
-  //           result.postalCode || "",
-  //           result.country || ""].join(", ");
-
-  //         map.addMarker({
-  //           'position': position,
-  //           'title':  address
-  //         });
-  //       } else {
-  //         alert("Not found");
-  //       }
-  //     });
-
-    // var watchOptions = {
-    //   timeout : 3000,
-    //   enableHighAccuracy: false // may cause errors if true
-    // };
-
-    // var watch = $cordovaGeolocation.watchPosition(watchOptions);
-    // watch.then(
-    //   null,
-    //   function(err) {
-    //     // error
-    //   },
-    //   function(position) {
-    //     var lat  = position.coords.latitude
-    //     var long = position.coords.longitude
-    //     console.log(position);
-    //     console.log('lat:'+lat + ' long:'+long);
-    // });
-
-
-  //  watch.clearWatch();
-    // OR
-    // $cordovaGeolocation.clearWatch(watch)
-    //   .then(function(result) {
-    //     // success
-    //     }, function (error) {
-    //     // error
-    //   });
-
-      $scope.insert = function() {
-      $ionicPopup.prompt({
-          title: 'Digite o seu nome',
-          inputType: 'text'
-      })
-      .then(function(result) {
-          if(result !== undefined) {
-              console.log(result);
-          } else {
-              console.log("Action not completed");
-          }
-      });
+      
+    $scope.localizacao = function(localentrega){
+        //guarda a localizacao
+        $localstorage.setObject('localentrega',localentrega);
+        $state.go('tab.pagamento');
+      }
+    }else{
+      $scope.mensagem = 'Nenhum cardápio escolhido';
     }
- 
 })
 
-.controller('PagamentoCtrl', function($scope) {
-  $scope.settings = {
-    enableFriends: true
+.controller('PagamentoCtrl', function($scope,$localstorage,$stateParams,Cardapios,$state,$ionicPopup) {
+
+    var CarregarFormas = function() {
+    Cardapios.allFormaPagamento(12).success(function (data) {
+      $scope.pagamentos = data;
+    }).error(function (data, status) {
+      $scope.message = "Aconteceu um problema: " + data;
+    });
   };
+  
+  CarregarFormas();
+
+  $scope.$on('$ionicView.enter', function(e) {
+   //recarrega toda vez que abre
+    $scope.nome = $localstorage.get('nome');
+    $scope.nomeprato = $localstorage.get('prato');
+    $scope.preco = $localstorage.getObject('preco');
+    $scope.valor = $scope.preco.valor;
+    $scope.quantidade = $localstorage.get('quantidade');
+    $scope.tamanho = $scope.preco.tamanho;
+    $scope.pagamentos = [];
+    $scope.pagamentoSelected = $scope.pagamentos[1];
+    $scope.localentrega =  $localstorage.getObject('localentrega');
+    $scope.remover =  'Tirar '+ $localstorage.get('remover');
+    CarregarFormas();
+  });
+
+  var limpa = function() {
+    // Após fazer o pedido limpa
+     $localstorage.removeKey('prato');
+     $localstorage.removeKey('quantidade');
+     $localstorage.removeKey('preco');
+     $localstorage.removeKey('remover');
+     $localstorage.removeKey('localentrega');
+  };
+  
+
+  $scope.pedido = function(){
+    limpa();
+
+    $ionicPopup.alert({
+     title: 'MarmitApp',
+     template: 'Pedido finalizado com sucesso!'
+     }).then(function(res) {
+        $state.go('tab.dash');
+     });
+      
+  }
+   
 });
 

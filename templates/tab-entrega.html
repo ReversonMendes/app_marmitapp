@@ -1,13 +1,31 @@
-<ion-view view-title="Account">
-  <ion-content>
-    <ion-list>
-    <ion-toggle  ng-model="settings.enableFriends">
-        Enable Friends
-    </ion-toggle>
-    <div style="width:90%;margin-left:10%;height:500px" id="map_canvas"></div>
-   <button class="button button-full button-positive"  ng-click="callme()">
-     Digite seu nome
-    </button>
-    </ion-list>
-  </ion-content>
+<ion-view view-title="Local de entrega">
+    <ion-content >
+    <form  ng-submit="localizacao(localentrega)">
+	    <div class="list list-inset">
+	    	<p class="energized">Verifique se o endereço abaixo está correto, caso contrário informe um endereço de entrega.</p>
+	    	<p class="assertive">{{mensagem}}</p>
+		  <label class="item item-input">
+		  	<span class="input-label">Cidade</span>
+		    <input type="text" ng-model= "localentrega.cidade" placeholder="Cidade">
+		  </label>
+		  <label class="item item-input">
+		  	<span class="input-label">Bairro</span>
+		    <input type="text" ng-model= "localentrega.bairro" placeholder="Bairro">
+		  </label>
+		  <label class="item item-input">
+		  	<span class="input-label">Rua</span>
+		    <input type="text" ng-model= "localentrega.rua" placeholder="Rua">
+		  </label>
+		  <label class="item item-input">
+		  	<span class="input-label">Número</span>
+		    <input type="text" ng-model= "localentrega.numero" placeholder="Número">
+		  </label>
+		  <label class="item item-input">
+		  	<span class="input-label">Complemento</span>
+		    <input type="text" ng-model= "localentrega.complemento" placeholder="Complemento">
+		  </label>
+		</div>
+		<input type="submit" class="button button-positive button-block" value="OK">
+     </form>
+    </ion-content>
 </ion-view>

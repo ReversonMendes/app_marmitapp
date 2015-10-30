@@ -3,10 +3,12 @@
     <ion-refresher pulling-text="Puxe para atualizar" on-refresh="doRefresh()">
     </ion-refresher>
     <ion-list>
-      <ion-item class="list card item-avatar item-icon-right" ng-repeat="cardapio in cardapios" type="item-text-wrap" href="#/tab/pedido/{{cardapio.idcardapio}}/{{cardapio.idempresa}}">
-        <img ng-src="http://www.marmitapp.com.br/img/uploads/empresas_logos/{{cardapio.logo}}">
-        <h2>{{cardapio.nomeprato}}</h2>
-        <p>{{cardapio.razaosocial}}</p>
+      <ion-item class="list card item-light item-thumbnail-left item item-icon-right" ng-repeat="cardapio in cardapios" type="item-text-wrap" href="#/tab/pedido/{{cardapio.idcardapio}}/{{cardapio.idempresa}}/{{cardapio.nomeprato}}">
+
+        <img ng-src="http://localhost:80/img/uploads/empresas_logos/{{cardapio.logo}}">
+        <h2>{{cardapio.razaosocial}}</h2>
+        <p>Cardápio: <strong>{{cardapio.nomeprato}}</strong></p>
+        <p>{{cardapio.fone}}</p>
         <i class="icon ion-chevron-right icon-accessory"></i>
       </ion-item>
     </ion-list>

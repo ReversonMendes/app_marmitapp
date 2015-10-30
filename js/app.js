@@ -5,9 +5,9 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'ngCordova','starter.controllers', 'starter.services'])
+angular.module('starter', ['ionic', 'ngCordova','starter.controllers', 'starter.services','pedido.services'])
 
-.run(function($ionicPlatform,$ionicPopup) {
+.run(function($ionicPlatform,$ionicPopup,$localstorage) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -22,45 +22,28 @@ angular.module('starter', ['ionic', 'ngCordova','starter.controllers', 'starter.
     }
 
     if(window.Connection){
-      if(navigator.connection.type == Connection.NONE){
+      if(navigator.connection.type == Connection.NONE || navigator.connection.type == Connection.UNKNOWN){
         $ionicPopup.alert({
           title: 'Atenção',
           content: 'você não está conectado na internet.'
         });
       }
     }
-    var div = document.getElementById("map_canvas");
-    var map = plugin.google.maps.Map.getMap(div);
 
-    // if (window.plugin) {
-    //    // map = window.plugin.google.maps.Map;//.getMap(div);
-    //     console.log("map");
-    //   // var request = {
-    //   //   'position': -25.729435499999997
-    //   // };
-    //   // plugin.google.maps.Geocoder.geocode(request, function(position) {
-    //   //   if (position.length) {
-    //   //     var result = results[0];
-    //   //     var position = result.position; 
-    //   //     var address = [
-    //   //       result.subThoroughfare || "",
-    //   //       result.thoroughfare || "",
-    //   //       result.locality || "",
-    //   //       result.adminArea || "",
-    //   //       result.postalCode || "",
-    //   //       result.country || ""].join(", ");
-
-    //   //       console.log(address);
-
-    //   //     map.addMarker({
-    //   //       'position': position,
-    //   //       'title':  address
-    //   //     });
-    //   //   } else {
-    //   //     alert("Not found");
-    //   //   }
-    //   // });
-    // }
+    if($localstorage.get('nome') == '' || $localstorage.get('nome') == null){
+        $ionicPopup.prompt({
+            title: 'Informe o seu nome',
+            inputType: 'text',
+            showBackdrop: false
+        })
+        .then(function(result) {
+            if(result !== undefined) {
+                $localstorage.set('nome',result)
+            } else {
+                console.log("Action not completed");
+            }
+        });
+    }
 
   });
 })
@@ -94,7 +77,7 @@ angular.module('starter', ['ionic', 'ngCordova','starter.controllers', 'starter.
   
 
   .state('tab.pedido', {
-      url: '/pedido/:cardapioId/:empresaId',
+      url: '/pedido/:cardapioId/:empresaId/:nomeprato',
       views: {
         'tab-pedido': {
           templateUrl: 'templates/tab-pedido.html',
