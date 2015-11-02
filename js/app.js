@@ -5,9 +5,9 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'ngCordova','starter.controllers', 'starter.services','pedido.services'])
+angular.module('starter', ['ionic', 'ngCordova','cardapios.controllers','pedidos.controllers', 'localentrega.controllers','pagamento.controllers' ,'starter.services','pedido.services','login.controllers'])
 
-.run(function($ionicPlatform,$ionicPopup,$localstorage) {
+.run(function($ionicPlatform,$ionicPopup,$localstorage,$state) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -22,7 +22,7 @@ angular.module('starter', ['ionic', 'ngCordova','starter.controllers', 'starter.
     }
 
     if(window.Connection){
-      if(navigator.connection.type == Connection.NONE || navigator.connection.type == Connection.UNKNOWN){
+      if(navigator.connection.type == Connection.NONE ){
         $ionicPopup.alert({
           title: 'Atenção',
           content: 'você não está conectado na internet.'
@@ -86,15 +86,23 @@ angular.module('starter', ['ionic', 'ngCordova','starter.controllers', 'starter.
       }
     })
 
-    // .state('tab.pedido-detail', {
-    //   url: '/pedido/:cardapioId',
-    //   views: {
-    //     'tab-pedido': {
-    //       templateUrl: 'templates/pedido-detail.html',
-    //       controller: 'CardapioDetailCtrl'
-    //     }
-    //   }
-    // })
+    .state('tab.login', {
+      url: '/login',
+      views: {
+      templateUrl: 'templates/login.html',
+      controller: 'LoginCtrl' 
+      }
+    })
+
+  .state('tab.conta', {
+      url: '/conta',
+      views: {
+        'tab-conta': {  
+          templateUrl: 'templates/conta.html',
+          controller: 'LoginCtrl'
+        }
+      }
+    })
 
   .state('tab.entrega', {
     url: '/entrega',
@@ -107,9 +115,9 @@ angular.module('starter', ['ionic', 'ngCordova','starter.controllers', 'starter.
   })
 
     .state('tab.pagamento', {
-    url: '/pagamento',
+    url: '/entrega',
     views: {
-      'tab-pagamento': {
+      'tab-entrega': {
         templateUrl: 'templates/tab-pagamento.html',
         controller: 'PagamentoCtrl'
       }

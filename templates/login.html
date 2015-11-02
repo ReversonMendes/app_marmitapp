@@ -1,0 +1,40 @@
+<ion-modal-view >
+ <ion-header-bar class="bar bar-footer bar-positive">
+    <h1 class="title">Login</h1>
+    <div class="buttons">
+        <button class="button button-clear" ng-click="sair()">Sair</button>
+    </div>
+  </ion-header-bar>
+  <ion-content>
+    <form ng-submit="validaLogin()">
+      <div class="list">
+        <label class="item item-input">
+          <span class="input-label">Usuário</span>
+          <input type="text" ng-model="loginData.usuario">
+        </label>
+        <label class="item item-input">
+          <span class="input-label">Senha</span>
+          <input type="password" ng-model="loginData.senha">
+        </label>
+        <label class="item item-input">
+                <span class="input-label">dados</span><textarea placeholder="Ex: tirar cebola, trazer uma coca">{{loginData}}</textarea>
+          </label>
+        <label class="item">
+          <button class="button button-block button-calm" type="submit">Login</button>
+        </label>
+      </div>
+    </form>
+      <div>
+          <div class="padding">
+              <button ng-click="googleLogin()" class="button button-block button-assertive">
+                 Logar com a conta do google 
+              </button>
+          </div>
+      </div>
+  </ion-content>
+  <div class="bar bar-footer bar-positive">
+    <div class="buttons" >
+        <button class="button button-clear" ng-click="cadastro()">Criar conta</button>
+    </div>
+  </div>
+</ion-modal-view >

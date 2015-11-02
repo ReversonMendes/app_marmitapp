@@ -1,14 +1,26 @@
-<!--
-  This template loads for the 'tab.friend-detail' state (app.js)
-  'friend' is a $scope variable created in the FriendsCtrl controller (controllers.js)
-  The FriendsCtrl pulls data from the Friends service (service.js)
-  The Friends service returns an array of friend data
--->
-<ion-view view-title="{{cardapios.name}}">
+<ion-view view-title="">
   <ion-content class="padding">
-    <img ng-src="{{cardapios.face}}" style="width: 64px; height: 64px">
-    <p>
-      {{cardapios.lastText}}
-    </p>
+    <div>
+    <h4>Dados do pedido</h4>
+    <p> Pedido em nome de {{nome}}</p>
+    <p> Prato escolhido {{nomeprato}}</p>
+    <p> Valor unitário: {{valor}}</p>
+    <p> Tamanho: {{tamanho}}</p>
+    <p> Quantidade: {{quantidade}}</p>
+    <p> Valor total: {{quantidade * valor}}</p>
+    <label class="item item-input item-select">
+      <div class="input-label">
+          Forma de Pagamento
+      </div>
+    <select ng-model="pagamentoSelected" ng-options="pagamento.descrpagamento for pagamento in pagamentos"></select>
+   </label>
+    <label class="item item-input">
+        <span class="input-label">Observação</span><textarea placeholder="Ex: tirar cebola, trazer uma coca">{{remover}}</textarea>
+    </label>
+    <span class="input-label">Local de entrega</span><p>{{localentrega.cidade}}, {{localentrega.bairro}}, {{localentrega.rua}}, {{localentrega.numero}}, {{localentrega.complemento}}</p>
+   </div>
+    <button class="button button-full button-positive"  ng-click="pedido()">
+      Finalizar meu pedido
+    </button>
   </ion-content>
 </ion-view>

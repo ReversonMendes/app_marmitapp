@@ -1,4 +1,4 @@
-<ion-view view-title="Chats">
+<ion-view view-title="Finalizar Pedido">
   <ion-content>
   	<div>
     <h4>Dados do pedido</h4>
@@ -7,7 +7,7 @@
     <p> Valor unitário: {{valor}}</p>
     <p> Tamanho: {{tamanho}}</p>
     <p> Quantidade: {{quantidade}}</p>
-    <p> Valor total: {{quantidade * valor}}</p>
+    <p> Valor total: {{total}}</p>
     <label class="item item-input item-select">
       <div class="input-label">
       		Forma de Pagamento
@@ -22,5 +22,10 @@
     <button class="button button-full button-positive"  ng-click="pedido()">
       Finalizar meu pedido
     </button>
-  </ion-content>
+    </ion-content>
+    <div class="bar bar-footer">
+      <!-- <div class="buttons" > -->
+        <button class="button button-full button-assertive" ng-click="cancela()">Cancelar</button>
+      <!-- </div> -->
+    </div>  
 </ion-view>

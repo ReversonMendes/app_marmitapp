@@ -1,0 +1,19 @@
+<ion-view title="Conta">
+<ion-content padding="true" class="has-header" >
+  <form  ng-submit="atualizarConta(usuario)">
+      <label class="item item-input">
+          <span class="input-label">Nome</span>
+          <input type="text" name="nome" ng-model="usuario.nome" required placeholder="" >
+      </label>
+      <label class="item item-input">
+          <span class="input-label">Email</span>
+          <input type="text" name="email" ng-model="usuario.email" required placeholder="" >
+      </label>
+      <label class="item item-input">
+          <span class="input-label">Senha</span>
+          <input type="password" name="senha" ng-model="usuario.senha" required placeholder="******" >
+      </label>
+   <input type="submit" class="button button-calm button-block" value="Salvar">
+  </form>
+</ion-content>
+</ion-view>
