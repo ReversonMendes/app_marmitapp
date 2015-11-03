@@ -23,6 +23,12 @@ angular.module('starter.services', [])
     return $http.get("http://www.marmitapp.com.br/api/listaFormaPagamento.php?empresa_id="+idempresa);
   };
 
+      //Manda o pedido do usuário
+  var postPedido = function (pedido) {
+    return $http.post("http://localhost/api/postPedido.php", {dados: pedido});
+  };
+
+
   return {
     all: function() {
       return getCardapios();
@@ -39,7 +45,9 @@ angular.module('starter.services', [])
 
     allFormaPagamento: function(idempresa) {
       return getFormaPagamento(idempresa);
-    }
+    },
+
+    postPedido: postPedido
 
   };
 });

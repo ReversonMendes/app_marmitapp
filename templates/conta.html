@@ -1,18 +1,38 @@
 <ion-view title="Conta">
-<ion-content padding="true" class="has-header" >
+<ion-content>
+    <ion-list>
+      <div ng-repeat="group in groups">
+        <ion-item class="item-stable"
+                  ng-click="toggleGroup(group)"
+                  ng-class="{active: isGroupShown(group)}">
+            <i class="icon" ng-class="isGroupShown(group) ? 'ion-minus' : 'ion-plus'"></i>
+          &nbsp;
+          Pedidos
+          <span class="badge badge-assertive">3</span>
+        </ion-item>
+        <ion-item class="item-accordion"
+                  ng-repeat="item in group.items"
+                  ng-show="isGroupShown(group)">
+          {{item}}
+        </ion-item>
+      </div>
+    </ion-list>
+
   <form  ng-submit="atualizarConta(usuario)">
+      <div class="list list-inset">
       <label class="item item-input">
           <span class="input-label">Nome</span>
-          <input type="text" name="nome" ng-model="usuario.nome" required placeholder="" >
+          <input type="text" name="nome" ng-model="usuario.nome" placeholder="" >
       </label>
       <label class="item item-input">
           <span class="input-label">Email</span>
-          <input type="text" name="email" ng-model="usuario.email" required placeholder="" >
+          <input type="text" name="email" ng-model="usuario.email" placeholder="" >
       </label>
       <label class="item item-input">
           <span class="input-label">Senha</span>
-          <input type="password" name="senha" ng-model="usuario.senha" required placeholder="******" >
+          <input type="password" name="senha" ng-model="usuario.senha" placeholder="******" >
       </label>
+      </div>
    <input type="submit" class="button button-calm button-block" value="Salvar">
   </form>
 </ion-content>

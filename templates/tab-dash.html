@@ -1,10 +1,9 @@
 <ion-view view-title="Cardápio">
-  <ion-content>
+  <ion-content class="padding scroll-bg">
     <ion-refresher pulling-text="Puxe para atualizar" on-refresh="doRefresh()">
     </ion-refresher>
     <ion-list>
       <ion-item class="list card item-light item-thumbnail-left item item-icon-right" ng-repeat="cardapio in cardapios" type="item-text-wrap" href="#/tab/pedido/{{cardapio.idcardapio}}/{{cardapio.idempresa}}/{{cardapio.nomeprato}}">
-
         <img ng-src="http://www.marmitapp.com.br/img/uploads/empresas_logos/{{cardapio.logo}}">
         <h2>{{cardapio.razaosocial}}</h2>
         <p>Cardápio:</p>

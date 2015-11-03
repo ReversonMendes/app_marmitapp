@@ -4,14 +4,14 @@ angular.module('localentrega.controllers', [])
   $scope.localentrega = {};
   $scope.mensagem = '';
 
-  if(typeof $localstorage.get('preco') != 'undefined'){
+  // if(typeof $localstorage.get('preco') != 'undefined'){
     var posOptions = {timeout: 10000, enableHighAccuracy: false};
     //Busca o endereço do usuário
+    $ionicLoading.show({
+      content: 'Obtendo localização atual ...',
+      showBackdrop: false
+    });
     $cordovaGeolocation.getCurrentPosition(posOptions).then(function (position) {
-        // $ionicLoading.show({
-        //   content: 'Obtendo localização atual ...',
-        //   showBackdrop: false
-        // });
         var latlng = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
         var geocoder = new google.maps.Geocoder();
         console.log(position.coords.latitude);
@@ -32,7 +32,6 @@ angular.module('localentrega.controllers', [])
               if(ac.types.indexOf("route") >= 0) rua = ac.long_name;
               if(ac.types.indexOf("street_number") >= 0) numero = ac.long_name;
               if(ac.types.indexOf("sublocality_level_1") >= 0) bairro = ac.long_name;
-              console.log(result.address_components[i]);
             }
 
               $scope.localentrega = {
@@ -40,15 +39,19 @@ angular.module('localentrega.controllers', [])
                   "bairro" : bairro,
                   "rua" : rua,
                   "numero" : numero
-              }
+              };
+              $scope.$apply()
+              $ionicLoading.hide();
           } 
         });
         // $ionicLoading.hide();
       }, function(error) {
-          $ionicPopup.alert({
-            title: 'Atenção',
-            content: 'Não é possível obter a localização: ' + error.message
-          });
+        $ionicLoading.hide();
+        $ionicPopup.alert({
+          title: 'Atenção',
+          content: 'Não é possível obter a localização: ' + error.message
+        });
+
       });
       
     $scope.localizacao = function(localentrega){
@@ -56,7 +59,7 @@ angular.module('localentrega.controllers', [])
         $localstorage.setObject('localentrega',localentrega);
         $state.go('tab.pagamento');
       }
-    }else{
-      $scope.mensagem = 'Nenhum cardápio escolhido';
-    }
+    // }else{
+      // $scope.mensagem = 'Nenhum cardápio escolhido';
+    // }
 })

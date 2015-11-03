@@ -1,6 +1,6 @@
 angular.module('pedidos.controllers', [])
 
-.controller('IngredienteCtrl', function($scope,Cardapios, $ionicActionSheet,$stateParams,$localstorage,$state) {
+.controller('IngredienteCtrl', function($scope,Cardapios, $ionicActionSheet,$stateParams,$localstorage,$state,$ionicLoading) {
 
   $scope.$on('$ionicView.enter', function(e) {
    $localstorage.removeKey('quantidade');
@@ -14,6 +14,7 @@ angular.module('pedidos.controllers', [])
   $scope.nomeprato = $stateParams.nomeprato;
   console.log($scope.nomeprato);
   $localstorage.set('prato',$scope.nomeprato);
+  $localstorage.set('idcardapio',$stateParams.cardapioId);
 
    $scope.doRefresh = function() {
     $scope.ingredientes.unshift(CarregarIngredientes())
@@ -76,6 +77,10 @@ angular.module('pedidos.controllers', [])
     });
   };
 
+  $ionicLoading.show({
+      showBackdrop: false
+    });
   CarregarIngredientes();
   CarregarPrecos();
+  $ionicLoading.hide();
 })
