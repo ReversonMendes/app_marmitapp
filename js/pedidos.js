@@ -5,6 +5,8 @@ angular.module('pedidos.controllers', [])
   $scope.$on('$ionicView.enter', function(e) {
    $localstorage.removeKey('quantidade');
    $localstorage.removeKey('remover');
+   $scope.ingredientes.unshift(CarregarIngredientes())
+   $scope.$broadcast('scroll.refreshComplete');
   });
 
   $scope.ingredientes = [];
@@ -15,6 +17,7 @@ angular.module('pedidos.controllers', [])
   console.log($scope.nomeprato);
   $localstorage.set('prato',$scope.nomeprato);
   $localstorage.set('idcardapio',$stateParams.cardapioId);
+  $localstorage.set('idempresa',$stateParams.empresaId);
 
    $scope.doRefresh = function() {
     $scope.ingredientes.unshift(CarregarIngredientes())
@@ -23,18 +26,30 @@ angular.module('pedidos.controllers', [])
 
   var CarregarIngredientes = function () {
     $localstorage.removeKey("remover");
+    $ionicLoading.show();
     Cardapios.allIngredientes($stateParams.cardapioId).success(function (data) {
       $scope.ingredientes = data;
+      $ionicLoading.hide();
     }).error(function (data, status) {
-      $scope.message = "Aconteceu um problema: " + data;
+      $ionicLoading.hide();
+      $ionicPopup.alert({
+          title: 'MarmitApp',
+          content: 'Desculpe mas algo aconteceu'
+        });
     });
   };
 
     var CarregarPrecos = function() {
+    $ionicLoading.show();
     Cardapios.allprecos($stateParams.empresaId).success(function (data) {
       $scope.precos = data;
+      $ionicLoading.hide();
     }).error(function (data, status) {
-      $scope.message = "Aconteceu um problema: " + data;
+      $ionicLoading.hide();
+      $ionicPopup.alert({
+          title: 'MarmitApp',
+          content: 'Desculpe mas algo aconteceu'
+        });
     });
   };
 
@@ -77,10 +92,7 @@ angular.module('pedidos.controllers', [])
     });
   };
 
-  $ionicLoading.show({
-      showBackdrop: false
-    });
+
   CarregarIngredientes();
   CarregarPrecos();
-  $ionicLoading.hide();
 })

@@ -1,11 +1,11 @@
 angular.module('pagamento.controllers', [])
 
-.controller('PagamentoCtrl', function($scope,$localstorage,$stateParams,Cardapios,$state,$ionicPopup) {
+.controller('PagamentoCtrl', function($scope,$localstorage,Cardapios,$state,$ionicPopup) {
 
     $scope.pedido = {};
 
     var CarregarFormas = function() {
-    Cardapios.allFormaPagamento(12).success(function (data) {
+    Cardapios.allFormaPagamento($localstorage.get('idempresa')).success(function (data) {
       $scope.pagamentos = data;
     }).error(function (data, status) {
       $scope.message = "Aconteceu um problema: " + data;
@@ -22,6 +22,7 @@ angular.module('pagamento.controllers', [])
     $scope.pedido.idcardapio = $localstorage.get('idcardapio');
     $scope.pedido.quantidade = $localstorage.get('quantidade');
     $scope.pedido.localentrega =  $localstorage.getObject('localentrega');
+    $scope.pedido.idempresa =  $localstorage.get('idempresa');
     if(typeof $localstorage.get('remover') == 'undefined' ){
       $scope.pedido.remover =  '';
     }else{
@@ -47,6 +48,8 @@ angular.module('pagamento.controllers', [])
      $localstorage.removeKey('preco');
      $localstorage.removeKey('remover');
      $localstorage.removeKey('localentrega');
+     $localstorage.removeKey('idcardapio');
+     $localstorage.removeKey('idempresa');
   };
   
 
@@ -55,22 +58,35 @@ angular.module('pagamento.controllers', [])
     console.log($scope.pedido);
     Cardapios.postPedido( $scope.pedido )
 
-    .success(function (data) {    
-      $ionicPopup.alert({
-         title: 'MarmitApp',
-         template: 'Pedido finalizado com sucesso!'
-         }).then(function(res) {
-            $state.go('tab.dash');
-       });
-      limpa();
+    .success(function (data) { 
+      console.log(data);
+      if(data > 0){
+        $ionicPopup.alert({
+           title: 'MarmitApp',
+           template: 'Pedido finalizado com sucesso!'
+           }).then(function(res) {
+              $state.go('tab.dash');
+         });
+        //devo pegar o idpedido do usuário e depois buscar o status do mesmo
+
+        limpa();      
+      }else{
+        $ionicPopup.alert({
+           title: 'MarmitApp',
+           template: 'Houve um problema ao finalizar o pedido tente novamente!' + data
+           }).then(function(res) {
+           //   $state.go('tab.dash');
+         });
+      }
     })
 
     .error(function (data, status) {
+      console.log(data);
       $ionicPopup.alert({
          title: 'MarmitApp',
-         template: 'Pedido finalizado com sucesso!' + data
+         template: 'Houve um problema ao finalizar o pedido tente novamente!' + data
          }).then(function(res) {
-            $state.go('tab.dash');
+         //   $state.go('tab.dash');
        });
     });
   }

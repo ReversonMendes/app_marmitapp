@@ -1,6 +1,6 @@
 angular.module('cardapios.controllers', [])
 
-.controller('CardapiosCtrl', function($scope, Cardapios) {
+.controller('CardapiosCtrl', function($scope, Cardapios, $ionicLoading, $ionicPopup) {
   
  $scope.cardapios = [];
 
@@ -11,10 +11,16 @@ angular.module('cardapios.controllers', [])
   };
 
   var carregarCardapios = function () {
+    $ionicLoading.show();
     Cardapios.all().success(function (data) {
       $scope.cardapios = data;
+      $ionicLoading.hide();
     }).error(function (data, status) {
-      $scope.message = "Aconteceu um problema: " + data;
+      $ionicLoading.hide();
+      $ionicPopup.alert({
+          title: 'MarmitApp',
+          content: 'Desculpe mas algo aconteceu'
+        });
     });
   };
 

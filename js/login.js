@@ -72,15 +72,13 @@ angular.module('login.controllers', [])
 
   //teste
   $scope.groups = [];
-  for (var i=0; i<1; i++) {
-    $scope.groups[i] = {
-      name: i,
-      items: []
-    };
-    for (var j=0; j<3; j++) {
-      $scope.groups[i].items.push(i + '-' + j);
-    }
+  $scope.groups[0] = {
+    items: []
+  };
+  for (var j=0; j<3; j++) {
+    $scope.groups[0].items.push(1 + '-' + j);
   }
+
   
   /*
    * if given group is the selected group, deselect it

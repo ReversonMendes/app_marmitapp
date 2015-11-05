@@ -8,8 +8,8 @@ angular.module('localentrega.controllers', [])
     var posOptions = {timeout: 10000, enableHighAccuracy: false};
     //Busca o endereço do usuário
     $ionicLoading.show({
-      content: 'Obtendo localização atual ...',
-      showBackdrop: false
+      content: 'Obtendo localização atual ...'
+      // showBackdrop: false
     });
     $cordovaGeolocation.getCurrentPosition(posOptions).then(function (position) {
         var latlng = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
@@ -38,7 +38,8 @@ angular.module('localentrega.controllers', [])
                   "cidade" : cidade,
                   "bairro" : bairro,
                   "rua" : rua,
-                  "numero" : numero
+                  "numero" : numero,
+                  "complemento" : ""
               };
               $scope.$apply()
               $ionicLoading.hide();
@@ -50,9 +51,8 @@ angular.module('localentrega.controllers', [])
         $ionicPopup.alert({
           title: 'Atenção',
           content: 'Não é possível obter a localização: ' + error.message
-        });
-
-      });
+        });      
+    })
       
     $scope.localizacao = function(localentrega){
         //guarda a localizacao

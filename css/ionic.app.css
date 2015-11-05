@@ -22,7 +22,9 @@ $dark:                            #444 !default;
 
 .div {
   background-color: #eef2f2;
-  background-size: cover; }
+  background-size: cover;
+  height: 100%;
+  width: 100%; }
 
 /*!
   Ionicons, v2.0.1
