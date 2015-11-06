@@ -1,12 +1,13 @@
 angular.module('pagamento.controllers', [])
 
-.controller('PagamentoCtrl', function($scope,$localstorage,Cardapios,$state,$ionicPopup) {
+.controller('PagamentoCtrl', function($scope,$localstorage,Cardapios,$state,$ionicPopup,$ionicLoading,$ionicHistory) {
 
     $scope.pedido = {};
-
+    var valor = 0;
     var CarregarFormas = function() {
     Cardapios.allFormaPagamento($localstorage.get('idempresa')).success(function (data) {
       $scope.pagamentos = data;
+      console.log($scope.pagamentos);
     }).error(function (data, status) {
       $scope.message = "Aconteceu um problema: " + data;
     });
@@ -16,11 +17,12 @@ angular.module('pagamento.controllers', [])
 
   $scope.$on('$ionicView.enter', function(e) {
    //recarrega toda vez que abre
+    $scope.pedido = {};
     // monta scope de pedido
     $scope.pedido.nome = $localstorage.get('nome');
     $scope.pedido.nomeprato = $localstorage.get('prato');
     $scope.pedido.idcardapio = $localstorage.get('idcardapio');
-    $scope.pedido.quantidade = $localstorage.get('quantidade');
+    $scope.pedido.quantidade = $localstorage.getObject('quantidade').valor;;
     $scope.pedido.localentrega =  $localstorage.getObject('localentrega');
     $scope.pedido.idempresa =  $localstorage.get('idempresa');
     if(typeof $localstorage.get('remover') == 'undefined' ){
@@ -32,12 +34,11 @@ angular.module('pagamento.controllers', [])
     //apresenta
     $scope.preco = $localstorage.getObject('preco');
     $scope.valor = $scope.preco.valor;
-    console.log($scope.valor);
+    valor = $scope.valor;
+    $scope.valor = valor.replace(',','.');
     $scope.tamanho = $scope.preco.tamanho;
-    $scope.total = parseFloat($scope.valor) * parseFloat($scope.quantidade);
+    $scope.total = parseFloat($scope.valor) * parseFloat($scope.pedido.quantidade);
 
-
-    console.log($scope.pedido);
     CarregarFormas();
   });
 
@@ -54,41 +55,46 @@ angular.module('pagamento.controllers', [])
   
 
   $scope.finalizarpedido = function(){
-    //$scope.$apply()
-    console.log($scope.pedido);
-    Cardapios.postPedido( $scope.pedido )
-
-    .success(function (data) { 
-      console.log(data);
-      if(data > 0){
-        $ionicPopup.alert({
-           title: 'MarmitApp',
-           template: 'Pedido finalizado com sucesso!'
-           }).then(function(res) {
-              $state.go('tab.dash');
-         });
-        //devo pegar o idpedido do usuário e depois buscar o status do mesmo
-
-        limpa();      
+     if( typeof $scope.pedido.pagamento == 'undefined'){
+         $ionicLoading.show({ template: 'Por favor selecione uma forma de pagamento', noBackdrop: true, duration: 3000 });
+      }else if(typeof $localstorage.get('preco') == 'undefined'){
+         $ionicLoading.show({ template: 'Você deve fazer o pedido antes de finalizar', noBackdrop: true, duration: 3000 });
       }else{
-        $ionicPopup.alert({
-           title: 'MarmitApp',
-           template: 'Houve um problema ao finalizar o pedido tente novamente!' + data
-           }).then(function(res) {
-           //   $state.go('tab.dash');
-         });
-      }
-    })
+        Cardapios.postPedido( $scope.pedido )
+        .success(function (data) { 
+          console.log(data);
+          if(data > 0){
+            $ionicPopup.alert({
+               title: 'MarmitApp',
+               template: 'Pedido finalizado com sucesso!'
+               }).then(function(res) {
+                  $ionicHistory.clearHistory()
+                  $state.go('tab.dash');
+             });
+            //devo pegar o idpedido do usuário e depois buscar o status do mesmo
+            $localstorage.set('pedido',data);
+            limpa();      
+          }else{
+            $ionicPopup.alert({
+               title: 'MarmitApp',
+               template: 'Houve um problema ao finalizar o pedido tente novamente!' + data
+               }).then(function(res) {
+               //   $state.go('tab.dash');
+             });
+          }
+        })
 
-    .error(function (data, status) {
-      console.log(data);
-      $ionicPopup.alert({
-         title: 'MarmitApp',
-         template: 'Houve um problema ao finalizar o pedido tente novamente!' + data
-         }).then(function(res) {
-         //   $state.go('tab.dash');
-       });
-    });
+        .error(function (data, status) {
+          console.log(data);
+          $ionicPopup.alert({
+             title: 'MarmitApp',
+             template: 'Houve um problema ao finalizar o pedido tente novamente!' + data
+             }).then(function(res) {
+             //   $state.go('tab.dash');
+           });
+        });
+      }
+
   }
 
    $scope.cancela = function(){
@@ -104,7 +110,9 @@ angular.module('pagamento.controllers', [])
 
      confirmPopup.then(function(res) {
        if(res) {
+        //limpa tudo
         limpa();
+        $ionicHistory.clearHistory()
         $state.go('tab.dash');
        } else {
          console.log(res);

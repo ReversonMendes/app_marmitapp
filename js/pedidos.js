@@ -2,9 +2,23 @@ angular.module('pedidos.controllers', [])
 
 .controller('IngredienteCtrl', function($scope,Cardapios, $ionicActionSheet,$stateParams,$localstorage,$state,$ionicLoading) {
 
+    var limpa = function() {
+    // Após fazer o pedido limpa
+     $localstorage.removeKey('quantidade');
+     $localstorage.removeKey('preco');
+     $localstorage.removeKey('remover');
+     $localstorage.removeKey('localentrega');
+     $localstorage.removeKey('idcardapio');
+     $localstorage.removeKey('idempresa');
+      $scope.quantidade = {
+          valor: 1
+      };
+  };
+
+
+
   $scope.$on('$ionicView.enter', function(e) {
-   $localstorage.removeKey('quantidade');
-   $localstorage.removeKey('remover');
+   limpa();
    $scope.ingredientes.unshift(CarregarIngredientes())
    $scope.$broadcast('scroll.refreshComplete');
   });
@@ -12,12 +26,14 @@ angular.module('pedidos.controllers', [])
   $scope.ingredientes = [];
   $scope.precos = [];
   $scope.nomeprato = "";
-  $scope.quantidade = 1;
+  //$scope.quantidade = 1;
+  $scope.quantidade = {
+        valor: 1
+    };
+
   $scope.nomeprato = $stateParams.nomeprato;
   console.log($scope.nomeprato);
-  $localstorage.set('prato',$scope.nomeprato);
-  $localstorage.set('idcardapio',$stateParams.cardapioId);
-  $localstorage.set('idempresa',$stateParams.empresaId);
+  
 
    $scope.doRefresh = function() {
     $scope.ingredientes.unshift(CarregarIngredientes())
@@ -86,12 +102,14 @@ angular.module('pedidos.controllers', [])
       },
       buttonClicked: function (index) {
         $localstorage.setObject("preco",$scope.precos[index]);
-        $localstorage.set('quantidade',$scope.quantidade);
+        $localstorage.setObject('quantidade',$scope.quantidade);
+        $localstorage.set('prato',$scope.nomeprato);
+        $localstorage.set('idcardapio',$stateParams.cardapioId);
+        $localstorage.set('idempresa',$stateParams.empresaId);
         $state.go('tab.entrega');
       }
     });
   };
-
 
   CarregarIngredientes();
   CarregarPrecos();

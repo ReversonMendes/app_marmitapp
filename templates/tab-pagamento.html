@@ -5,12 +5,12 @@
         <h4> Dados do pedido </h4>
         <p> Pedido em nome de {{pedido.nome}}</p>
         <p> Prato escolhido {{pedido.nomeprato}}</p>
-        <p> Valor unitário: {{valor}}</p>
+        <p> Valor unitário: R$ {{valor}}</p>
         <p> Tamanho: {{tamanho}}</p>
         <p> Quantidade: {{pedido.quantidade}}</p>
-        <p> Valor total: {{total}}</p>
+        <p> Valor total: R$ {{total}}</p>
         <label class="item item-input item-select item-stacked-label">
-          <span class="input-label">Forma de Pagamento</span>
+          <span class="input-label">Forma de pagamento</span>
         <select ng-model="pedido.pagamento" ng-options="pagamento.descrpagamento for pagamento in pagamentos"></select>
        </label>
         <label class="item item-input item-stacked-label">
@@ -29,35 +29,5 @@
           Cancelar o pedido
         </button>
      </form>
-
-  	<!-- <div class="list list-inset">
-    <h4>Dados do pedido</h4>
-    <p> Pedido em nome de {{pedido.nome}}</p>
-    <p> Prato escolhido {{pedido.nomeprato}}</p>
-    <p> Valor unitário: {{valor}}</p>
-    <p> Tamanho: {{tamanho}}</p>
-    <p> Quantidade: {{pedido.quantidade}}</p>
-    <p> Valor total: {{total}}</p>
-    <label class="item item-input item-select item-stacked-label">
-      <div class="input-label">
-      		Forma de Pagamento
-    	</div>
-		<select ng-model="pedido.pagamento" ng-options="pagamento.descrpagamento for pagamento in pagamentos"></select>
-	 </label>
-    <label class="item item-input">
-        <span class="input-label">Observação</span><textarea ng-model="pedido.remover" placeholder="Ex: tirar cebola, trazer uma coca">{{pedido.remover}}</textarea>
-    </label>
-    <label class="item item-input item-stacked-label">
-        <span class="input-label">Local de entrega</span>
-        <textarea readonly>{{pedido.localentrega.cidade}}, {{pedido.localentrega.bairro}}, {{pedido.localentrega.rua}}, {{pedido.localentrega.numero}}, {{pedido.localentrega.complemento}}</textarea>
-    </label>
-	 </div>
-    <button class="button button-full button-positive"  ng-click="finalizarpedido()">
-      Finalizar meu pedido
-    </button>
-    
-    <button class="button button-full button-assertive"  ng-click="cancela()">
-      Cancelar o pedido
-    </button> -->
     </ion-content>
 </ion-view>

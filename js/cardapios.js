@@ -17,10 +17,6 @@ angular.module('cardapios.controllers', [])
       $ionicLoading.hide();
     }).error(function (data, status) {
       $ionicLoading.hide();
-      $ionicPopup.alert({
-          title: 'MarmitApp',
-          content: 'Desculpe mas algo aconteceu'
-        });
     });
   };
 

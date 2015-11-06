@@ -1,4 +1,4 @@
-angular.module('starter.services', [])
+angular.module('api.services', [])
 
 .factory('Cardapios', function($http) {
   var cardapios = [];

@@ -1,4 +1,4 @@
-angular.module('pedido.services', [])
+angular.module('local.services', [])
 
 .factory('$localstorage', ['$window', function($window) {
   return {

@@ -1,10 +1,8 @@
 angular.module('localentrega.controllers', [])
 
-.controller('EntregaCtrl', function($scope,$ionicPopup,$cordovaGeolocation,$ionicLoading,$localstorage,$state) {
+.controller('EntregaCtrl', function($scope,$ionicPopup,$cordovaGeolocation,$ionicLoading,$localstorage,$state,$cordovaToast) {
   $scope.localentrega = {};
-  $scope.mensagem = '';
-
-  // if(typeof $localstorage.get('preco') != 'undefined'){
+  
     var posOptions = {timeout: 10000, enableHighAccuracy: false};
     //Busca o endereço do usuário
     $ionicLoading.show({
@@ -53,13 +51,18 @@ angular.module('localentrega.controllers', [])
           content: 'Não é possível obter a localização: ' + error.message
         });      
     })
+
       
     $scope.localizacao = function(localentrega){
-        //guarda a localizacao
-        $localstorage.setObject('localentrega',localentrega);
-        $state.go('tab.pagamento');
-      }
-    // }else{
-      // $scope.mensagem = 'Nenhum cardápio escolhido';
-    // }
+        if(typeof $localstorage.get('preco') != 'undefined'){
+           $localstorage.setObject('localentrega',localentrega);
+            //guarda a localizacao
+          $state.go('tab.pagamento');
+        }else{
+           $ionicLoading.show({ template: 'Nenhum cardápio selecionado', noBackdrop: true, duration: 5000 });
+        }
+    }
+
+
+    
 })

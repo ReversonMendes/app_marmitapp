@@ -1,4 +1,4 @@
-angular.module('starter', ['ionic', 'ngCordova','cardapios.controllers','pedidos.controllers', 'localentrega.controllers','pagamento.controllers' ,'starter.services','pedido.services','login.controllers'])
+angular.module('starter', ['ionic', 'ngCordova','cardapios.controllers','pedidos.controllers', 'localentrega.controllers','pagamento.controllers' ,'api.services','local.services','login.controllers'])
 
 .run(function($ionicPlatform,$ionicPopup,$localstorage,$state) {
   $ionicPlatform.ready(function() {
