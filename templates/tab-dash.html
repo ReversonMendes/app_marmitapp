@@ -3,6 +3,11 @@
     <ion-refresher pulling-text="Puxe para atualizar" on-refresh="doRefresh()">
     </ion-refresher>
     <ion-list>
+        <a class="item item-icon-left item-text-wrap item-assertive" ng-hide='logado'ng-click='entrar()' >
+          <i class="icon ion-log-in"></i>
+          <h3 class="light">Entrar</h3>
+          <p><span class="light">Olá você precisa estar logado para realizar os pedidos.</span></p>
+        </a>
       <ion-item class="list card item-light item-thumbnail-left item item-icon-right" ng-repeat="cardapio in cardapios" type="item-text-wrap" href="#/tab/pedido/{{cardapio.idcardapio}}/{{cardapio.idempresa}}/{{cardapio.nomeprato}}">
         <img ng-src="http://www.marmitapp.com.br/img/uploads/empresas_logos/{{cardapio.logo}}">
         <h2>{{cardapio.razaosocial}}</h2>

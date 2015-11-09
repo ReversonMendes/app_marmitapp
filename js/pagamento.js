@@ -1,6 +1,6 @@
 angular.module('pagamento.controllers', [])
 
-.controller('PagamentoCtrl', function($scope,$localstorage,Cardapios,$state,$ionicPopup,$ionicLoading,$ionicHistory) {
+.controller('PagamentoCtrl', function($scope,$localstorage,Cardapios,$state,$ionicPopup,$ionicLoading,$ionicHistory, LoginService) {
 
     $scope.pedido = {};
     var valor = 0;
@@ -19,7 +19,7 @@ angular.module('pagamento.controllers', [])
    //recarrega toda vez que abre
     $scope.pedido = {};
     // monta scope de pedido
-    $scope.pedido.nome = $localstorage.get('nome');
+    $scope.pedido.nome = $localstorage.getObject('login').nome;
     $scope.pedido.nomeprato = $localstorage.get('prato');
     $scope.pedido.idcardapio = $localstorage.get('idcardapio');
     $scope.pedido.quantidade = $localstorage.getObject('quantidade').valor;;
@@ -55,6 +55,13 @@ angular.module('pagamento.controllers', [])
   
 
   $scope.finalizarpedido = function(){
+     if (typeof $localstorage.get('login') == 'undefined') {
+      LoginService.init('templates/login.html', $scope).then(function(modal) {
+        modal.show();
+      });
+      return
+     }
+
      if( typeof $scope.pedido.pagamento == 'undefined'){
          $ionicLoading.show({ template: 'Por favor selecione uma forma de pagamento', noBackdrop: true, duration: 3000 });
       }else if(typeof $localstorage.get('preco') == 'undefined'){

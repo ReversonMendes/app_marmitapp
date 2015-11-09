@@ -2,7 +2,7 @@
   <ion-content class="padding scroll-bg">
   <form>
       <div class="list list-inset">
-        <h4> Dados do pedido </h4>
+        <h4 align="center"> Dados do pedido </h4>
         <p> Pedido em nome de {{pedido.nome}}</p>
         <p> Prato escolhido {{pedido.nomeprato}}</p>
         <p> Valor unitário: R$ {{valor}}</p>
@@ -14,7 +14,7 @@
         <select ng-model="pedido.pagamento" ng-options="pagamento.descrpagamento for pagamento in pagamentos"></select>
        </label>
         <label class="item item-input item-stacked-label">
-            <span class="input-label">Observação</span><textarea ng-model="pedido.remover" placeholder="Ex: tirar cebola, trazer uma coca">{{pedido.remover}}</textarea>
+            <span class="input-label">Observação</span><textarea readonly  rows="4" ng-model="pedido.remover" placeholder="Ex: tirar cebola, trazer uma coca">{{pedido.remover}}</textarea>
         </label>
         <label class="item item-input item-stacked-label">
             <span class="input-label">Local de entrega</span>

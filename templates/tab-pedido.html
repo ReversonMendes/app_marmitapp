@@ -1,13 +1,15 @@
 <ion-view view-title="Pedido">
   <ion-content class="padding scroll-bg">
+      <ion-refresher pulling-text="Puxe para atualizar" on-refresh="doRefresh()">
+    </ion-refresher>
     <div class="div">
       <h4>{{nomeprato}}</h4>
       <p>Deslize para a esquerda para remover o ingrediente</p>
     </div>
-    <div class="item item-divider item-icon-right">
+<!--     <div class="item item-divider item-icon-right">
       Refazer
       <a href="#" ng-click="doRefresh()"><i class="icon ion-refresh icon-accessory"></i></a>
-    </div>
+    </div> -->
     <ion-list>
        <ul style="list-style-type:disc">
          <ion-item class="item-remove-animate item-icon-right" ng-repeat="ingrediente in ingredientes" type="item-text-wrap">
@@ -24,6 +26,11 @@
         <span class="input-label">Quantidade</span>
         <input type="number" ng-model="quantidade.valor" min='1'>
       </label>
+      <div class="div">
+      <label class="item item-input item-stacked-label">
+            <span class="input-label">Observação</span><textarea rows="4" ng-model="obs" placeholder="Ex: tirar cebola, trazer uma coca">{{obs.data}}</textarea>
+        </label>
+      </div>
     <button class="button button-full button-positive"  ng-click="showPrecoOptions()">
      Fazer pedido
     </button>

@@ -1,4 +1,4 @@
-angular.module('starter', ['ionic', 'ngCordova','cardapios.controllers','pedidos.controllers', 'localentrega.controllers','pagamento.controllers' ,'api.services','local.services','login.controllers'])
+angular.module('starter', ['ionic', 'ngCordova','cardapios.controllers','pedidos.controllers', 'localentrega.controllers','pagamento.controllers' ,'api.services','local.services','login.controllers','conta.controllers'])
 
 .run(function($ionicPlatform,$ionicPopup,$localstorage,$state) {
   $ionicPlatform.ready(function() {
@@ -21,21 +21,6 @@ angular.module('starter', ['ionic', 'ngCordova','cardapios.controllers','pedidos
           content: 'você não está conectado na internet.'
         });
       }
-    }
-
-    if($localstorage.get('nome') == '' || $localstorage.get('nome') == null){
-        $ionicPopup.prompt({
-            title: 'Informe o seu nome',
-            inputType: 'text',
-            showBackdrop: false
-        })
-        .then(function(result) {
-            if(result !== undefined) {
-                $localstorage.set('nome',result)
-            } else {
-                console.log("Action not completed");
-            }
-        });
     }
 
   });
@@ -79,20 +64,13 @@ angular.module('starter', ['ionic', 'ngCordova','cardapios.controllers','pedidos
       }
     })
 
-    .state('tab.login', {
-      url: '/login',
-      views: {
-      templateUrl: 'templates/login.html',
-      controller: 'LoginCtrl' 
-      }
-    })
 
   .state('tab.conta', {
       url: '/conta',
       views: {
         'tab-conta': {  
           templateUrl: 'templates/conta.html',
-          controller: 'LoginCtrl'
+          controller: 'ContaCtrl'
         }
       }
     })
