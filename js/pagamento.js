@@ -79,7 +79,11 @@ angular.module('pagamento.controllers', [])
                   $state.go('tab.dash');
              });
             //devo pegar o idpedido do usuário e depois buscar o status do mesmo
-            $localstorage.set('pedido',data);
+            if(typeof $localstorage.get('idpedido') == 'undefined' ){
+              $localstorage.set('idpedido',data);
+            }else{
+              $localstorage.set('idpedido',$localstorage.get('idpedido')+','+data);
+            }
             limpa();      
           }else{
             $ionicPopup.alert({

@@ -28,6 +28,10 @@ angular.module('api.services', [])
     return $http.post("http://www.marmitapp.com.br/api/postPedido.php", {dados: pedido});
   };
 
+      //Busca os status do usuario
+  var getPedidos = function (idpedidos) {
+    return $http.get("http://www.marmitapp.com.br/api/getPedidos.php?pedido_id="+idpedidos);
+  };
 
   return {
     all: function() {
@@ -47,7 +51,11 @@ angular.module('api.services', [])
       return getFormaPagamento(idempresa);
     },
 
-    postPedido: postPedido
+    postPedido: postPedido,
+
+    getPedidos: function(idpedidos) {
+      return getPedidos(idpedidos);
+    }
 
   };
 });

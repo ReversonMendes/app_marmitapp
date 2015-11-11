@@ -1,6 +1,6 @@
 angular.module('conta.controllers', [])
 
-.controller('ContaCtrl', function($scope, $localstorage,$state,LoginService) {
+.controller('ContaCtrl', function($scope, $localstorage,$state,LoginService, Cardapios) {
 
   $scope.getPerfilInfo = function() {
    	$scope.perfilData = $localstorage.getObject('login');
@@ -35,6 +35,7 @@ angular.module('conta.controllers', [])
 
   $scope.$on('$ionicView.enter', function(e) {
    $scope.getPerfilInfo();
+   buscaPedido();
    $scope.$broadcast('scroll.refreshComplete');
   });
 
@@ -43,16 +44,26 @@ angular.module('conta.controllers', [])
   $scope.groups[0] = {
     items: []
   };
-  for (var j=0; j<3; j++) {
-    $scope.groups[0].items.push(1 + '-' + j);
-  }
-
+  
+   var buscaPedido = function () {
+    //$ionicLoading.show();
+    Cardapios.getPedidos($localstorage.get('idpedido')).success(function (data) {
+      //status aqui
+      $scope.pedidos = data;
+      $scope.groups[0].items = $scope.pedidos;
+      console.log(data);
+   //   $ionicLoading.hide();
+    }).error(function (data, status) {
+     // $ionicLoading.hide();
+    });
+  };
   
   $scope.toggleGroup = function(group) {
     if ($scope.isGroupShown(group)) {
       $scope.shownGroup = null;
     } else {
       $scope.shownGroup = group;
+      buscaPedido();
     }
   };
   $scope.isGroupShown = function(group) {

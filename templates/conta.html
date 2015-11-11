@@ -8,14 +8,14 @@
             <i class="icon" ng-class="isGroupShown(group) ? 'ion-minus' : 'ion-plus'"></i>
           &nbsp;
           Pedidos
-          <span class="badge badge-assertive">3</span>
+          <span class="badge badge-assertive">{{group.items.length}}</span>
         </ion-item>
         <ion-item class="item-accordion"
                   ng-repeat="item in group.items"
                   ng-show="isGroupShown(group)">
-          {{item}}
+          {{item.idpedido}} {{item.nomeprato}}
           <span class="item-note">
-            Grammy
+            {{item.status}}
           </span>
         </ion-item>
       </div>
