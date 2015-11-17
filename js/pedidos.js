@@ -22,7 +22,7 @@ angular.module('pedidos.controllers', [])
   });
 
   $scope.ingredientes = [];
-  $scope.obs = '';
+  $scope.obs = {dados: ""};
   $scope.precos = [];
   $scope.nomeprato = "";
   //$scope.quantidade = 1;
@@ -37,11 +37,12 @@ angular.module('pedidos.controllers', [])
    $scope.doRefresh = function() {
     $scope.ingredientes.unshift(CarregarIngredientes())
     $scope.$broadcast('scroll.refreshComplete');
+    $scope.$apply()
   };
 
   var CarregarIngredientes = function () {
     $localstorage.removeKey("remover");
-    $scope.obs = '';
+    $scope.obs.dados = '';
     $ionicLoading.show();
     Cardapios.allIngredientes($stateParams.cardapioId).success(function (data) {
       $scope.ingredientes = data;
@@ -81,9 +82,9 @@ angular.module('pedidos.controllers', [])
    }
     $scope.ingredientes.splice($scope.ingredientes.indexOf(ingrediente), 1);
     if(typeof $localstorage.get('remover') == 'undefined' ){
-      $scope.obs =  '';
+      $scope.obs.dados =  '';
     }else{
-      $scope.obs =  'Tirar '+ $localstorage.get('remover');
+      $scope.obs.dados +=  'Tirar '+ $localstorage.get('remover');
     }
   };
 

@@ -17,6 +17,7 @@ angular.module('cardapios.controllers', [])
       $scope.cardapios = data;
       $ionicLoading.hide();
     }).error(function (data, status) {
+      console.log(data,status);
       $ionicLoading.hide();
     });
   };
