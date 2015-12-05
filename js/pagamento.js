@@ -28,7 +28,7 @@ angular.module('pagamento.controllers', [])
     if(typeof $localstorage.get('remover') == 'undefined' ){
       $scope.pedido.remover =  '';
     }else{
-      $scope.pedido.remover =  'Tirar '+ $localstorage.get('remover');
+      $scope.pedido.remover =  $localstorage.get('remover');
     }
 
     //apresenta
@@ -58,6 +58,7 @@ angular.module('pagamento.controllers', [])
      if (typeof $localstorage.get('login') == 'undefined') {
       LoginService.init('templates/login.html', $scope).then(function(modal) {
         modal.show();
+        $scope.$on();
       });
       return
      }

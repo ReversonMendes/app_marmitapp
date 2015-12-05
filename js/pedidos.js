@@ -22,7 +22,7 @@ angular.module('pedidos.controllers', [])
   });
 
   $scope.ingredientes = [];
-  $scope.obs = {dados: ""};
+  $scope.tirar = "";
   $scope.precos = [];
   $scope.nomeprato = "";
   //$scope.quantidade = 1;
@@ -42,7 +42,7 @@ angular.module('pedidos.controllers', [])
 
   var CarregarIngredientes = function () {
     $localstorage.removeKey("remover");
-    $scope.obs.dados = '';
+    $scope.tirar = '';
     $ionicLoading.show();
     Cardapios.allIngredientes($stateParams.cardapioId).success(function (data) {
       $scope.ingredientes = data;
@@ -75,16 +75,20 @@ angular.module('pedidos.controllers', [])
     console.log(ingrediente.nomeingrediente);
    // $localstorage.set('tirar', $localstorage.get('tirar') +', '+ ingrediente.nomeingrediente);
    if(typeof $localstorage.get('remover') == 'undefined' ){
-    $localstorage.set('remover',ingrediente.nomeingrediente );
+     $localstorage.set('remover',ingrediente.nomeingrediente );
    }else{
     var junta =  $localstorage.get('remover')
     $localstorage.set('remover', junta +', '+ ingrediente.nomeingrediente);
    }
+
     $scope.ingredientes.splice($scope.ingredientes.indexOf(ingrediente), 1);
+
+
     if(typeof $localstorage.get('remover') == 'undefined' ){
-      $scope.obs.dados =  '';
+      $scope.tirar =  '';
     }else{
-      $scope.obs.dados +=  'Tirar '+ $localstorage.get('remover');
+      $scope.tirar =  'Tirar '+ $localstorage.get('remover');
+      console.log($scope.tirar)
     }
   };
 
@@ -110,6 +114,7 @@ angular.module('pedidos.controllers', [])
         $localstorage.set('prato',$scope.nomeprato);
         $localstorage.set('idcardapio',$stateParams.cardapioId);
         $localstorage.set('idempresa',$stateParams.empresaId);
+        $localstorage.set('remover',$scope.tirar);
         $state.go('tab.entrega');
       }
     });
