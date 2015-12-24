@@ -6,15 +6,13 @@ angular.module('pagamento.controllers', [])
     var valor = 0;
     var CarregarFormas = function() {
     Cardapios.allFormaPagamento($localstorage.get('idempresa')).success(function (data) {
-      $scope.pagamentos = data;
-      console.log($scope.pagamentos);
-    }).error(function (data, status) {
-      $scope.message = "Aconteceu um problema: " + data;
-    });
-  };
+        $scope.pagamentos = data;
+        console.log($scope.pagamentos);
+      }).error(function (data, status) {
+        $scope.message = "Aconteceu um problema: " + data;
+      });
+    };
   
-  CarregarFormas();
-
   $scope.$on('$ionicView.enter', function(e) {
    //recarrega toda vez que abre
     $scope.pedido = {};
@@ -22,6 +20,7 @@ angular.module('pagamento.controllers', [])
     $scope.pedido.nome = $localstorage.getObject('login').nome;
     $scope.pedido.nomeprato = $localstorage.get('prato');
     $scope.pedido.idcardapio = $localstorage.get('idcardapio');
+    $scope.pedido.idpreco = $localstorage.getObject('preco').idpreco;
     $scope.pedido.quantidade = $localstorage.getObject('quantidade').valor;;
     $scope.pedido.localentrega =  $localstorage.getObject('localentrega');
     $scope.pedido.idempresa =  $localstorage.get('idempresa');
@@ -38,7 +37,7 @@ angular.module('pagamento.controllers', [])
     $scope.valor = valor.replace(',','.');
     $scope.tamanho = $scope.preco.tamanho;
     $scope.total = parseFloat($scope.valor) * parseFloat($scope.pedido.quantidade);
-
+    console.log($scope.pedido);
     CarregarFormas();
   });
 
